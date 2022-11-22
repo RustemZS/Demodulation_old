@@ -120,10 +120,7 @@ int main()
 	}
 
 	// Фильтрация
-	for (int i = 0; i < (lSize / 2) - 1; i++)
-	{
 		filter(freq, fltr, (lSize / 2) - 1, window);
-	}
 
 	// Передискретизация
 	for (int i = 0; i < (lSize / 2) - 1; i += down)
