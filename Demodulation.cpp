@@ -6,7 +6,7 @@
 #include <math.h>
 using namespace std;
 
-// Комплексный отсчёт
+// РљРѕРјРїР»РµРєСЃРЅС‹Р№ РѕС‚СЃС‡С‘С‚
 template <class T>
 struct Complex {
 	Complex()
@@ -24,14 +24,14 @@ struct Complex {
 		this->result = 0;
 	}
 
-	// Нахождение модуля комплексного числа
+	// РќР°С…РѕР¶РґРµРЅРёРµ РјРѕРґСѓР»СЏ РєРѕРјРїР»РµРєСЃРЅРѕРіРѕ С‡РёСЃР»Р°
 	T ABS()
 	{
 		this->result = sqrt(re * re + im * im);
 		return sqrt(re * re + im * im);
 	}
 
-	// Нахождение фазы комплексного числа
+	// РќР°С…РѕР¶РґРµРЅРёРµ С„Р°Р·С‹ РєРѕРјРїР»РµРєСЃРЅРѕРіРѕ С‡РёСЃР»Р°
 	void ARG(int & i, std::vector<Complex<float>> & signal)
 	{
 		if (i == 0)
@@ -41,7 +41,7 @@ struct Complex {
 		else
 		{
 			T razn = (im / re) - (signal[i-1].im / signal[i-1].re);
-			while((razn >= M_PI) || (razn <= -1 * M_PI)) // Приведение к [-pi, pi]
+			while((razn >= M_PI) || (razn <= -1 * M_PI)) // РџСЂРёРІРµРґРµРЅРёРµ Рє [-pi, pi]
 			{
 				if (razn > M_PI)
 					razn -= 2 * M_PI;
@@ -53,7 +53,7 @@ struct Complex {
 		
 	}
 
-	// Определение частоты
+	// РћРїСЂРµРґРµР»РµРЅРёРµ С‡Р°СЃС‚РѕС‚С‹
 	void FREQ(int& i, int & Fd, std::vector<Complex<float>>& signal)
 	{
 		if (i == 0)
@@ -72,9 +72,9 @@ struct Complex {
 	T phase;
 };
 
-// Файл менеджер
+// Р¤Р°Р№Р» РјРµРЅРµРґР¶РµСЂ
 struct FileManager {
-	// Определение размера файла
+	// РћРїСЂРµРґРµР»РµРЅРёРµ СЂР°Р·РјРµСЂР° С„Р°Р№Р»Р°
 	FileManager(string & path, long int & size)
 	{
 		ifstream file;
@@ -82,7 +82,7 @@ struct FileManager {
 		file.open(path, ios::binary | ios::in);
 		if (!file.is_open())
 		{
-			cout << "Файл не открылся" << endl;
+			cout << "Р¤Р°Р№Р» РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << endl;
 			exit(1);
 		}
 
@@ -92,7 +92,7 @@ struct FileManager {
 		file.close();			
 	}
 	
-	// Извлечение отсчётов из файла
+	// РР·РІР»РµС‡РµРЅРёРµ РѕС‚СЃС‡С‘С‚РѕРІ РёР· С„Р°Р№Р»Р°
 	FileManager(string& path, string& modulation, long int& size, Complex<float> & sample, std::vector<Complex<float>> & signal)
 	{
 		ifstream file;
@@ -100,7 +100,7 @@ struct FileManager {
 		file.open(path, ios::binary | ios::in);
 		if (!file.is_open())
 		{
-			cout << "Файл не открылся" << endl;
+			cout << "Р¤Р°Р№Р» РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ" << endl;
 			exit(1);
 		}
 		file.seekg(0, std::ios::beg);
@@ -144,7 +144,7 @@ struct FileManager {
 	}
 };
 
-// Интерфейс демодулятора
+// РРЅС‚РµСЂС„РµР№СЃ РґРµРјРѕРґСѓР»СЏС‚РѕСЂР°
 struct Demodulator {
 	virtual void demodulator(long int & size, int & Fd, std::vector<Complex<float>> & signal) = 0;
 };
@@ -176,15 +176,15 @@ struct DemodulatorFM : Demodulator {
 	}
 };
 
-// Фильтр скользящего среднего
+// Р¤РёР»СЊС‚СЂ СЃРєРѕР»СЊР·СЏС‰РµРіРѕ СЃСЂРµРґРЅРµРіРѕ
 struct Filter {
 	Filter(bool & type, int & window, long int n, std::vector<Complex<float>>& signal)
 	{
 		if (type)
 		{
-			// Нерекурсивный фильтр
-			// window - Количество отсчетов интервала усреднения
-			float sumx = 0; // Сумма отсчетов на интервале
+			// РќРµСЂРµРєСѓСЂСЃРёРІРЅС‹Р№ С„РёР»СЊС‚СЂ
+			// window - РљРѕР»РёС‡РµСЃС‚РІРѕ РѕС‚СЃС‡РµС‚РѕРІ РёРЅС‚РµСЂРІР°Р»Р° СѓСЃСЂРµРґРЅРµРЅРёСЏ
+			float sumx = 0; // РЎСѓРјРјР° РѕС‚СЃС‡РµС‚РѕРІ РЅР° РёРЅС‚РµСЂРІР°Р»Рµ
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < window - 1; j++)
 				{
@@ -200,11 +200,11 @@ struct Filter {
 		}
 		else
 		{
-			// Рекурсивный фильтр
-			// window - Количество отсчетов интервала усреднения
-			float sumx = 0; // Сумма отсчетов на интервале
-			float* mas; // Массив для хранения window отсчетов
-			int index = 0; // Индекс элемента массива
+			// Р РµРєСѓСЂСЃРёРІРЅС‹Р№ С„РёР»СЊС‚СЂ
+			// window - РљРѕР»РёС‡РµСЃС‚РІРѕ РѕС‚СЃС‡РµС‚РѕРІ РёРЅС‚РµСЂРІР°Р»Р° СѓСЃСЂРµРґРЅРµРЅРёСЏ
+			float sumx = 0; // РЎСѓРјРјР° РѕС‚СЃС‡РµС‚РѕРІ РЅР° РёРЅС‚РµСЂРІР°Р»Рµ
+			float* mas; // РњР°СЃСЃРёРІ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ window РѕС‚СЃС‡РµС‚РѕРІ
+			int index = 0; // РРЅРґРµРєСЃ СЌР»РµРјРµРЅС‚Р° РјР°СЃСЃРёРІР°
 			mas = new float[window];
 			for (int i = 0; i < window; i++)
 				mas[i] = 0;
@@ -214,7 +214,7 @@ struct Filter {
 				sumx += mas[index];
 				index++;
 				if (index >= window)
-					index = 0; // Возврат к началу "окна"
+					index = 0; // Р’РѕР·РІСЂР°С‚ Рє РЅР°С‡Р°Р»Сѓ "РѕРєРЅР°"
 				signal[i].result = sumx / window;
 			}
 			delete[] mas;
@@ -223,7 +223,7 @@ struct Filter {
 	}
 };
 
-// Передискретизация
+// РџРµСЂРµРґРёСЃРєСЂРµС‚РёР·Р°С†РёСЏ
 void Downsample(int & parameter_down,long int & size, std::vector<Complex<float>>& signal)
 {
 	int k = size / (parameter_down * 2);
@@ -241,48 +241,48 @@ void Downsample(int & parameter_down,long int & size, std::vector<Complex<float>
 int main()
 {
 	setlocale(LC_ALL, "ru");
-	// Объявление переменных
-	string modulation; // Тип модуляции
-	string path; // Путь к файлу
-	int Fd;	// Частота дискретизации
-	long int size = 0; // Размер файла
-	int window = 1; // Размер окна
-	int parameter_down = 1; // Параметр передискретизации
-	bool flt = 0; // Условие включения фильтра
-	bool dwn = 0; // Условие включения передискретизации
-	bool type = 0; // Выбор типа фильтра
+	// РћР±СЉСЏРІР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅС‹С…
+	string modulation; // РўРёРї РјРѕРґСѓР»СЏС†РёРё
+	string path; // РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ
+	int Fd;	// Р§Р°СЃС‚РѕС‚Р° РґРёСЃРєСЂРµС‚РёР·Р°С†РёРё
+	long int size = 0; // Р Р°Р·РјРµСЂ С„Р°Р№Р»Р°
+	int window = 1; // Р Р°Р·РјРµСЂ РѕРєРЅР°
+	int parameter_down = 1; // РџР°СЂР°РјРµС‚СЂ РїРµСЂРµРґРёСЃРєСЂРµС‚РёР·Р°С†РёРё
+	bool flt = 0; // РЈСЃР»РѕРІРёРµ РІРєР»СЋС‡РµРЅРёСЏ С„РёР»СЊС‚СЂР°
+	bool dwn = 0; // РЈСЃР»РѕРІРёРµ РІРєР»СЋС‡РµРЅРёСЏ РїРµСЂРµРґРёСЃРєСЂРµС‚РёР·Р°С†РёРё
+	bool type = 0; // Р’С‹Р±РѕСЂ С‚РёРїР° С„РёР»СЊС‚СЂР°
 	
-	// Ввод данных
-	cout << "Тип модуляции: ";
+	// Р’РІРѕРґ РґР°РЅРЅС‹С…
+	cout << "РўРёРї РјРѕРґСѓР»СЏС†РёРё: ";
 	getline(cin, modulation);
-	cout << "Путь к файлу: ";
+	cout << "РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ: ";
 	getline(cin, path);
-	cout << "Частота дискретизации: ";
+	cout << "Р§Р°СЃС‚РѕС‚Р° РґРёСЃРєСЂРµС‚РёР·Р°С†РёРё: ";
 	cin >> Fd;
-	cout << "Нужна ли фильтрация (0 - нет, 1 - да): ";
+	cout << "РќСѓР¶РЅР° Р»Рё С„РёР»СЊС‚СЂР°С†РёСЏ (0 - РЅРµС‚, 1 - РґР°): ";
 	cin >> flt;
 	if (flt) 
 	{
-		cout << "Тип фильтра (1 - нерекурсивный, 0 - рекурсивный): ";
+		cout << "РўРёРї С„РёР»СЊС‚СЂР° (1 - РЅРµСЂРµРєСѓСЂСЃРёРІРЅС‹Р№, 0 - СЂРµРєСѓСЂСЃРёРІРЅС‹Р№): ";
 		cin >> type;
-		cout << "Размер окна: ";
+		cout << "Р Р°Р·РјРµСЂ РѕРєРЅР°: ";
 		cin >> window;
 	}
-	cout << "Нужна ли передискретизация (0 - нет, 1 - да): ";
+	cout << "РќСѓР¶РЅР° Р»Рё РїРµСЂРµРґРёСЃРєСЂРµС‚РёР·Р°С†РёСЏ (0 - РЅРµС‚, 1 - РґР°): ";
 	cin >> dwn;
 	if (dwn)
 	{
-		cout << "Параметр передискретизации: ";
+		cout << "РџР°СЂР°РјРµС‚СЂ РїРµСЂРµРґРёСЃРєСЂРµС‚РёР·Р°С†РёРё: ";
 		cin >> parameter_down;
 	}
 	
-	// Считывание отсчётов сигнала из файла
+	// РЎС‡РёС‚С‹РІР°РЅРёРµ РѕС‚СЃС‡С‘С‚РѕРІ СЃРёРіРЅР°Р»Р° РёР· С„Р°Р№Р»Р°
 	Complex<float> sample;
-	FileManager filesize(path, size); // Определение размера файла
+	FileManager filesize(path, size); // РћРїСЂРµРґРµР»РµРЅРёРµ СЂР°Р·РјРµСЂР° С„Р°Р№Р»Р°
 	std::vector<Complex<float>> signal(size/2);
-	FileManager filesamples(path, modulation, size, sample, signal); // Считывание отсчётов из файла
+	FileManager filesamples(path, modulation, size, sample, signal); // РЎС‡РёС‚С‹РІР°РЅРёРµ РѕС‚СЃС‡С‘С‚РѕРІ РёР· С„Р°Р№Р»Р°
 	
-	// Демодуляция
+	// Р”РµРјРѕРґСѓР»СЏС†РёСЏ
 	DemodulatorAM AM;
 	DemodulatorFM FM;
 	if (modulation == "AM") 
@@ -294,13 +294,13 @@ int main()
 		FM.demodulator(size, Fd, signal);
 	}
 	
-	// Фильтрация
+	// Р¤РёР»СЊС‚СЂР°С†РёСЏ
 	if (flt)
 	{
 		Filter filter(type, window, size / 2, signal);
 	}
 	
-	// Передискретизация
+	// РџРµСЂРµРґРёСЃРєСЂРµС‚РёР·Р°С†РёСЏ
 	if (dwn)
 	{
 		Downsample(parameter_down, size, signal);
